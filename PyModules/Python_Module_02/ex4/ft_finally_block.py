@@ -35,5 +35,5 @@ if __name__ == "__main__":
     test_watering_system(["Tomato", "Lettuce", "Carrots"])
     print()
     print("Testing invalid plants...")
-    test_watering_system(["Tomato", "lettuce"])
+    test_watering_system(["Tomato", "Lettuce"])
     print("Cleanup always happens, even with errors!")
