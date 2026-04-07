@@ -6,8 +6,9 @@ def input_temperature(temp_str: str) -> int:
         raise Exception(f"{temp}°C is too cold for plants (min 0°C)")
     if temp > 40:
         raise Exception(f"{temp}°C is too hot for plants (max 40°C)")
-    
+
     return temp
+
 
 def test_temperature() -> None:
     test_cases = ["25", "abc", "100", "-50"]
@@ -16,11 +17,12 @@ def test_temperature() -> None:
         print(f"Input data is '{data}'")
         try:
             temp = input_temperature(data)
-            print(f"temperature id now {temp}°C")                
+            print(f"temperature id now {temp}°C")
         except Exception as e:
             print(f"Caught input_temperature error: {e}")
 
         print()
+
 
 if __name__ == "__main__":
     print("=== Garden Temperature ===")
