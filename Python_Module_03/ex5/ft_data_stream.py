@@ -10,17 +10,18 @@ def gen_event() -> Generator[tuple[str, str], None, None]:
         "climb", "swim", "use", "release"
     ]
 
-    while True:
+    while True:  # Infinite loop
         yield (random.choice(players), random.choice(actions))
 
 
+# Process and shrink the list one by one until empty
 def consume_event(events: list[tuple[str, str]]) \
         -> Generator[tuple[tuple[str, str],
                            list[tuple[str, str]]], None, None]:
 
     while len(events) > 0:
         index = random.randrange(len(events))
-        event = events.pop(index)
+        event = events.pop(index)  # Remove that event from the list
         yield event, events
 
 
@@ -38,7 +39,7 @@ def main() -> None:
     events_list = [next(event_gen) for _ in range(10)]
     print(f"Built list of 10 events: {events_list}")
 
-    # consume
+    # Take one event and show remaining events
     for event, remaining in consume_event(events_list):
         print(f"Got event from list: {event}")
         print(f"Remains in list: {remaining}")

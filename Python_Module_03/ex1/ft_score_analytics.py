@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
+
 def main() -> None:
     print("=== Player Score Analytics ===")
 
@@ -14,7 +15,10 @@ def main() -> None:
             print(f"Invalid parameter: '{arg}'")
 
     if len(scores) == 0:
-        print("No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ...")
+        print(
+            "No scores provided. Usage: python3 ft_score_analytics.py"
+            "<score1> <score2> ..."
+        )
         return
 
     total_players = len(scores)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
+
 def parse_inventory(args: list[str]) -> dict[str, int]:
     inventory: dict[str, int] = {}
 
@@ -44,8 +45,11 @@ def print_inventory(inventory: dict[str, int]) -> None:
         percent = (qty / total) * 100
         print(f"Item {item} represents {percent:.1f}%")
 
-    most_item = max(inventory, key=inventory.get)
-    least_item = min(inventory, key=inventory.get)
+    def get_quantity(item: str) -> int:
+        return inventory[item]
+
+    most_item = max(inventory, key=get_quantity)
+    least_item = min(inventory, key=get_quantity)
 
     print(
         f"Item most abundant: {most_item} "
