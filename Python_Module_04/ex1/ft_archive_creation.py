@@ -23,7 +23,7 @@ def main() -> None:
         file.close()
         print(f"File '{filename}' closed.")
 
-        # 🔥 Transform data
+        # Transform data
         print("Transform data:")
         print("---")
 

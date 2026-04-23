@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -40,8 +41,7 @@ class NumericProcessor(DataProcessor):
             raise TypeError("Invalid numeric data")
 
         if isinstance(data, list):
-            for x in data:
-                self._storage.append(str(x))
+            self._storage.extend([str(x) for x in data])
         else:
             self._storage.append(str(data))
 
@@ -75,7 +75,11 @@ class LogProcessor(DataProcessor):
         def is_valid_dict(d):
             return (
                 isinstance(d, dict)
-                and all(isinstance(k, str) and isinstance(v, str) for k, v in d.items())
+                and all(
+                    isinstance(k, str) and
+                    isinstance(v, str)
+                    for k, v in d.items()
+                    )
             )
 
         if is_valid_dict(data):
@@ -130,5 +134,5 @@ if __name__ == "__main__":
     print(text.output())
     print(log.output())
 
-    # Force error (as required by exercise)
+    # Force error
     num.ingest("wrong type")  # should raise TypeError

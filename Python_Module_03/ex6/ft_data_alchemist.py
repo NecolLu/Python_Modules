@@ -16,7 +16,7 @@ def main() -> None:
 
     caps_only = [name for name in players if name[0].isupper()]
     print(f"New list of capitalized names only: {caps_only}")
-    
+
 # 	caps_only = []
 # 	for name in players:
 #     if name[0].isupper():
