@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 def secure_archive(
-    filename: str,
-    mode: str = "r",
-    content: str = "",
-) -> tuple[bool, str]:
+                    filename: str,
+                    mode: str = "r",
+                    content: str = "",
+                ) -> tuple[bool, str]:
     try:
         if mode == "r":
             with open(filename, "r") as f:

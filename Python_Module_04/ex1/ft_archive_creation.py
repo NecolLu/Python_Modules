@@ -28,6 +28,8 @@ def main() -> None:
         print("---")
 
         lines = content.splitlines()
+        # Split a string into a list where each line is a list item
+        # The splitting is done at line breaks.
         new_content: str = ""
 
         for line in lines:
