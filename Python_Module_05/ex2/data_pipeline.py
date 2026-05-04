@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 from abc import ABC, abstractmethod
 from typing import Any
+from typing import Protocol
+
+
+class ExportPlugin(Protocol):
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        ...
 
 
 # 1. The Blueprint
@@ -101,6 +107,25 @@ class LogProcessor(DataProcessor):
             self._storage.append(convert(data))
 
 
+# Json
+class JSONExport:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        items = []
+
+        for status, value in data:
+            items.append(f'{{"status": {status}, "data": "{value}"}}')
+
+        print("[" + ", ".join(items) + "]")
+
+
+# CSV
+class CSVExport:
+    def process_output(self, data: list[tuple[int, str]]) -> None:
+        print("status,data")
+        for status, value in data:
+            print(f"{status},{value}")
+
+
 # 3. The Manager
 class DataStream:
 
@@ -130,6 +155,28 @@ class DataStream:
             count = len(proc._storage)
             print(f"{proc.__class__.__name__}: {count} items in storage")
         print("----------------------------")
+
+    def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
+        collected: list[tuple[int, str]] = []
+
+        while len(collected) < nb:
+            made_progress = False
+
+            for proc in self.processors:
+                if len(collected) >= nb:
+                    break
+
+                try:
+                    item = proc.output()
+                    collected.append(item)
+                    made_progress = True
+                except Exception:
+                    continue
+
+            if not made_progress:
+                break
+
+        plugin.process_output(collected)
 
 
 # Testing
@@ -181,3 +228,9 @@ if __name__ == "__main__":
     # 6. FINAL STATS
     print("\n>>> Updated Statistics (after consumption):")
     ds.print_processors_stats()
+
+    print("\n>>> CSV Export:")
+    ds.output_pipeline(5, CSVExport())
+
+    print("\n>>> JSON Export:")
+    ds.output_pipeline(5, JSONExport())
