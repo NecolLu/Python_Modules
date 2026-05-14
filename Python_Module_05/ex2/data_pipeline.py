@@ -158,79 +158,70 @@ class DataStream:
 
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
         collected: list[tuple[int, str]] = []
-
-        while len(collected) < nb:
-            made_progress = False
-
-            for proc in self.processors:
-                if len(collected) >= nb:
-                    break
-
+        
+        for proc in self.processors:
+            # For each processor, try to grab 'nb' items
+            for _ in range(nb):
                 try:
+                    # This will pop from storage until it's empty
                     item = proc.output()
                     collected.append(item)
-                    made_progress = True
                 except Exception:
-                    continue
+                    # If this specific processor runs out, move to the next one
+                    break
 
-            if not made_progress:
-                break
-
+        # Send the combined results to the plugin
         plugin.process_output(collected)
 
 
 # Testing
 if __name__ == "__main__":
-    # 1. SETUP
-    # Create the Manager (DataStream)
+    # 1. Initialize the DataStream (The Manager)
     ds = DataStream()
 
-    # Create and register the Workers
-    num_proc = NumericProcessor()
-    text_proc = TextProcessor()
-    log_proc = LogProcessor()
+    # 2. Register Processors (The Specialists)
+    # These will be stored in the DataStream's internal list
+    ds.register_processor(NumericProcessor())
+    ds.register_processor(TextProcessor())
+    ds.register_processor(LogProcessor())
 
-    ds.register_processor(num_proc)
-    ds.register_processor(text_proc)
-    ds.register_processor(log_proc)
-
-    #  2. DEFINE THE STREAM
-    # A mix of data types to test the "routing"
-    stream_data = [
-        42,                            # Should go to Numeric
-        "Python is cool",              # Should go to Text
-        {"user": "admin", "op": "1"},  # Should go to Log
-        [1.1, 2.2],                    # Should go to Numeric (list)
-        "Final message",               # Should go to Text
-        True                           # True = 1, Should go to Numeric
+    # 3. Define the Test Data
+    # A mix of types to demonstrate polymorphic routing
+    mixed_data = [
+        42,                                   # Numeric
+        "Hello World",                        # Text
+        {"event": "login", "status": "ok"},   # Log
+        [10.5, 20.0],                         # Numeric (List)
+        "Data Pipelines are fun",             # Text
+        {"error": "timeout", "code": "408"}   # Log
     ]
 
-    # 3. RUN THE PROCESSING
-    print(">>> Processing the data stream...")
-    ds.process_stream(stream_data)
+    # --- PART A: CSV EXPORT ---
+    print(">>> [PHASE 1] Loading stream for CSV Export...")
+    ds.process_stream(mixed_data)
 
-    # 4. SHOW STATISTICS
-    print("\n>>> Current Statistics:")
+    print("\n>>> Current Statistics (Before CSV Export):")
     ds.print_processors_stats()
 
-    # 5. CONSUME AND OUTPUT
-    print("\n>>> Consuming elements from processors:")
-    for p in [num_proc, text_proc, log_proc]:
-        try:
-            status, data = p.output()
-            print(
-                f"[{p.__class__.__name__}]"
-                f"Output: {data} (Status: {status})"
-                )
-        except Exception as e:
-            print(f"[{p.__class__.__name__}] Error: {e}")
+    print("\n>>> Executing CSV Output Pipeline (nb=1)...")
+    # This will take 1 item from EACH registered processor
+    ds.output_pipeline(1, CSVExport())
 
-    # 6. FINAL STATS
-    print("\n>>> Updated Statistics (after consumption):")
+    print("\n>>> Statistics after CSV Export (Items should be reduced):")
     ds.print_processors_stats()
 
-    print("\n>>> CSV Export:")
-    ds.output_pipeline(5, CSVExport())
+    print("\n" + "="*40 + "\n")
 
-    print("\n>>> JSON Export:")
-    ds.output_pipeline(5, JSONExport())
+    # --- PART B: JSON EXPORT ---
+    # We RE-FILL the stream here because the previous pipeline call 
+    # 'consumed' (popped) data out of the internal storage.
+    print(">>> [PHASE 2] Re-filling stream for JSON Export...")
+    ds.process_stream(mixed_data)
+
+    print("\n>>> Executing JSON Output Pipeline (nb=2)...")
+    # This will take up to 2 items from EACH processor
+    # Because we refilled, the processors are populated again.
+    ds.output_pipeline(2, JSONExport())
+
+    print("\n>>> Final Statistics:")
+    ds.print_processors_stats()
