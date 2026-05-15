@@ -11,7 +11,7 @@ class ExportPlugin(Protocol):
 
 # 1. The Blueprint
 class DataProcessor(ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         self._storage: list[str] = []
 
     @abstractmethod
@@ -77,7 +77,7 @@ class TextProcessor(DataProcessor):
 class LogProcessor(DataProcessor):
 
     def validate(self, data: Any) -> bool:
-        def is_valid_dict(d):
+        def is_valid_dict(d: Any) -> bool:
             return (
                 isinstance(d, dict)
                 and all(
@@ -129,7 +129,7 @@ class CSVExport:
 # 3. The Manager
 class DataStream:
 
-    def __init__(self):
+    def __init__(self) -> None:
         # A list to store the registered processor objects
         self.processors: list[DataProcessor] = []
 
@@ -158,7 +158,7 @@ class DataStream:
 
     def output_pipeline(self, nb: int, plugin: ExportPlugin) -> None:
         collected: list[tuple[int, str]] = []
-        
+
         for proc in self.processors:
             # For each processor, try to grab 'nb' items
             for _ in range(nb):
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     print("\n" + "="*40 + "\n")
 
     # --- PART B: JSON EXPORT ---
-    # We RE-FILL the stream here because the previous pipeline call 
+    # We RE-FILL the stream here because the previous pipeline call
     # 'consumed' (popped) data out of the internal storage.
     print(">>> [PHASE 2] Re-filling stream for JSON Export...")
     ds.process_stream(mixed_data)

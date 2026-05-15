@@ -5,7 +5,7 @@ from typing import Any
 
 # 1. The Blueprint
 class DataProcessor(ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         self._storage: list[str] = []
 
     @abstractmethod
@@ -71,7 +71,7 @@ class TextProcessor(DataProcessor):
 class LogProcessor(DataProcessor):
 
     def validate(self, data: Any) -> bool:
-        def is_valid_dict(d):
+        def is_valid_dict(d: Any) -> bool:
             return (
                 isinstance(d, dict)
                 and all(
@@ -104,7 +104,7 @@ class LogProcessor(DataProcessor):
 # 3. The Manager
 class DataStream:
 
-    def __init__(self):
+    def __init__(self) -> None:
         # A list to store the registered processor objects
         self.processors: list[DataProcessor] = []
 
