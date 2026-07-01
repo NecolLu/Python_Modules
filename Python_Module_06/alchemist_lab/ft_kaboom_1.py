@@ -6,6 +6,6 @@ try:
     # This triggers the circular execution crash
     from alchemy.grimoire.dark_spellbook import dark_spell_record
     print(dark_spell_record("Necromancy", "bats, frogs"))
-except ImportError as e:
+except ImportError:
     import traceback
     traceback.print_exc()
