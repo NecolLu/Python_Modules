@@ -10,16 +10,28 @@ from ex2 import (
 )
 
 
+def get_opponent_names(
+    opponents: list[tuple[CreatureFactory, BattleStrategy]]
+) -> list[str]:
+    # Extract and format opponent names cleanly
+    names = []
+    for fact, strat in opponents:
+        f_name = fact.__class__.__name__
+        # Strip out 'CreatureFactory' or 'Factory' safely
+        f_clean = f_name.replace("CreatureFactory", "").replace("Factory", "")
+        # Strip out 'Strategy' safely
+        s_clean = strat.__class__.__name__.replace("Strategy", "")
+        names.append(f"({f_clean}+{s_clean})")
+    return names
+
+
 def run_tournament(
     name: str, opponents: list[tuple[CreatureFactory, BattleStrategy]]
 ) -> None:
     print(f"Tournament {name}")
 
-    # Format visual representation for the example match layout
-    opp_names = [
-        f"({fact.__class__.__name__.replace('CreatureFactory', '').replace('Factory', '')}+{strat.__class__.__name__.replace('Strategy', '')})"  # noqa: E501
-        for fact, strat in opponents
-    ]
+    opp_names = get_opponent_names(opponents)
+
     print(f"[ {', '.join(opp_names)} ]")
     print("*** Tournament ***")
     print(f"{len(opponents)} opponents involved")

@@ -9,7 +9,6 @@ def test_healing() -> None:
     base = factory.create_base()
     print(base.describe())
     print(base.attack())
-    # We can explicitly use the capability method here for testing
     if hasattr(base, 'heal'):
         print(base.heal())
 
