@@ -41,7 +41,7 @@ if missing_dependencies:
 def main() -> None:
     print("LOADING STATUS: Loading programs...")
     print("Checking dependencies:")
-    
+
     # Print the exact versions currently installed in the environment
     print(f" [OK] pandas ({pd.__version__}) - Data manipulation ready")
     print(f" [OK] numpy ({np.__version__}) - Numerical computation ready")
@@ -63,7 +63,7 @@ def main() -> None:
                                          ])
 
     print("Generating visualization...")
-    
+
     # Step 3: Create a line graph using matplotlib
     plt.figure(figsize=(10, 6))
     plt.plot(df["Signal_Alpha"].cumsum(), label="Alpha Stream", color="green")
@@ -72,11 +72,11 @@ def main() -> None:
     plt.xlabel("Ticks")
     plt.ylabel("Signal Amplitude")
     plt.legend()
-    
+
     # Save the chart as an image file
     output_file = "matrix_analysis.png"
     plt.savefig(output_file)
-    
+
     print("Analysis complete!")
     print(f"Results saved to: {output_file}")
 
