@@ -18,21 +18,21 @@ class ContactType(str, Enum):
 
 class AlienContact(BaseModel):
     # String, 5-15 characters
-    contact_id: str = Field(..., min_length=5, max_length=15)
+    contact_id: str = Field(min_length=5, max_length=15)
     timestamp: datetime
 
     # String, 3-100 characters
-    location: str = Field(..., min_length=3, max_length=100)
+    location: str = Field(min_length=3, max_length=100)
     contact_type: ContactType
 
     # Float, 0.0-10.0 scale
-    signal_strength: float = Field(..., ge=0.0, le=10.0)
+    signal_strength: float = Field(ge=0.0, le=10.0)
 
     # Integer, 1-1440 (max 24 hours)
-    duration_minutes: int = Field(..., ge=1, le=1440)
+    duration_minutes: int = Field(ge=1, le=1440)
 
     # Integer, 1-100 people
-    witness_count: int = Field(..., ge=1, le=100)
+    witness_count: int = Field(ge=1, le=100)
 
     # Optional string, max 500 characters
     message_received: Optional[str] = Field(default=None, max_length=500)

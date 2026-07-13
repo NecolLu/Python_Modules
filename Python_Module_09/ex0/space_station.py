@@ -5,17 +5,17 @@ from pydantic import BaseModel, Field, ValidationError  # type: ignore
 
 class SpaceStation(BaseModel):
     # String, 3-10 characters
-    station_id: str = Field(..., min_length=3, max_length=10)
+    station_id: str = Field(min_length=3, max_length=10)
 
     # String, 1-50 characters
-    name: str = Field(..., min_length=1, max_length=50)
+    name: str = Field(min_length=1, max_length=50)
 
     # Integer, 1-20 people
-    crew_size: int = Field(..., ge=1, le=20)
+    crew_size: int = Field(ge=1, le=20)
 
     # Float, 0.0-100.0 percent
-    power_level: float = Field(..., ge=0.0, le=100.0)
-    oxygen_level: float = Field(..., ge=0.0, le=100.0)
+    power_level: float = Field(ge=0.0, le=100.0)
+    oxygen_level: float = Field(ge=0.0, le=100.0)
 
     # DateTime field
     last_maintenance: datetime
