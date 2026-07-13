@@ -6,7 +6,7 @@ from typing import Any, Callable
 # Spell Reducer
 
 def spell_reducer(spells: list[int], operation: str) -> int:
-    """Reduce a list of spell powers using a specified operator."""
+    # Reduce a list of spell powers using a specified operator
     if not spells:
         return 0
 
@@ -28,7 +28,7 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 def partial_enchanter(
     base_enchantment: Callable[[int, str, str], str]
 ) -> dict[str, Callable[[str], str]]:
-    """Return a dictionary of specialized partial enchantment functions."""
+    # Return a dictionary of specialized partial enchantment functions
     # Freeze power=50 and pre-fill individual element types
     fire_fn = functools.partial(base_enchantment, 50, "Fire")
     ice_fn = functools.partial(base_enchantment, 50, "Ice")
@@ -45,7 +45,7 @@ def partial_enchanter(
 
 @functools.lru_cache(maxsize=None)
 def memoized_fibonacci(n: int) -> int:
-    """Calculate the nth Fibonacci number using an LRU cache."""
+    # Calculate the nth Fibonacci number using an LRU cache
     if n < 0:
         raise ValueError("Fibonacci index cannot be negative.")
     if n == 0:
@@ -59,34 +59,33 @@ def memoized_fibonacci(n: int) -> int:
 
 @functools.singledispatch
 def _base_dispatcher(spell: Any) -> str:
-    """Fallback handler for unknown spell data types."""
+    # Fallback handler for unknown spell data types
     return "Unknown spell type"
 
 
 @_base_dispatcher.register(int)
 def _(spell: int) -> str:
-    """Handle integer input as a damage spell."""
+    # Handle integer input as a damage spell
     return f"Damage spell: {spell} damage"
 
 
 @_base_dispatcher.register(str)
 def _(spell: str) -> str:
-    """Handle string input as an enchantment."""
+    # Handle string input as an enchantment
     return f"Enchantment: {spell}"
 
 
 @_base_dispatcher.register(list)
 def _(spell: list[Any]) -> str:
-    """Handle list input as a multi-cast spell grouping."""
+    # Handle list input as a multi-cast spell grouping
     return f"Multi-cast: {len(spell)} spells"
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
-    """Return the single dispatch routing function entrypoint."""
+    # Return the single dispatch routing function entrypoint
     return _base_dispatcher
 
 
-# Execution and Demonstratio
 if __name__ == "__main__":
     print("Testing spell reducer...")
     powers = [10, 20, 30, 40]

@@ -7,7 +7,7 @@ from typing import Any
 # Spell Timer Decorator
 
 def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
-    """Measure and print the execution time of a function."""
+    # Measure and print the execution time of a function
     @functools.wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting {func.__name__}...")
@@ -25,7 +25,7 @@ def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
 def power_validator(
         min_power: int
         ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-    """Return a decorator that validates a spell's minimum power level."""
+    # Return a decorator that validates a spell's minimum power level
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -50,7 +50,7 @@ def power_validator(
 def retry_spell(
         max_attempts: int
         ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-    """Return a decorator that retries a function if it raises an exception."""
+    # Return a decorator that retries a function if it raises an exception
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -70,22 +70,21 @@ def retry_spell(
 # MageGuild Class Integration
 
 class MageGuild:
-    """Class representing a guild of mages managing spells"""
+    # Class representing a guild of mages managing spells
 
     @staticmethod
     def validate_mage_name(name: str) -> bool:
-        """Check if a mage's name is valid (>= 3 chars, letters/spaces only)"""
+        # Check if a mage's name is valid (>= 3 chars, letters/spaces only)
         if len(name) < 3:
             return False
         return all(char.isalpha() or char.isspace() for char in name)
 
     @power_validator(min_power=10)
     def cast_spell(self, spell_name: str, power: int) -> str:
-        """Execute a spell casting if the minimum power threshold is met."""
+        # Execute a spell casting if the minimum power threshold is met
         return f"Successfully cast {spell_name} with {power} power"
 
 
-# Execution and Demonstration
 if __name__ == "__main__":
     print("Testing spell timer...")
 

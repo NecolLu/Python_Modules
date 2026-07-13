@@ -3,7 +3,7 @@ from typing import Any
 
 
 def mage_counter() -> Callable[[], int]:
-    """Create a closure that counts how many times it has been called."""
+    # Create a closure that counts how many times it has been called
     count = 0
 
     def counter() -> int:
@@ -15,7 +15,7 @@ def mage_counter() -> Callable[[], int]:
 
 
 def spell_accumulator(initial_power: int) -> Callable[[int], int]:
-    """Create a closure that accumulates total power over multiple calls."""
+    # Create a closure that accumulates total power over multiple calls
     total_power = initial_power
 
     def accumulator(power: int) -> int:
@@ -27,7 +27,7 @@ def spell_accumulator(initial_power: int) -> Callable[[int], int]:
 
 
 def enchantment_factory(enchantment_type: str) -> Callable[[str], str]:
-    """Return a function that applies a specific prefix enchantment."""
+    # Return a function that applies a specific prefix enchantment
     def enchanter(item_name: str) -> str:
         return f"{enchantment_type} {item_name}"
 
@@ -35,7 +35,7 @@ def enchantment_factory(enchantment_type: str) -> Callable[[str], str]:
 
 
 def memory_vault() -> dict[str, Callable[..., Any]]:
-    """Return a dictionary containing private store and recall closures."""
+    # Return a dictionary containing private store and recall closures
     vault: dict[str, Any] = {}
 
     def store(key: str, value: Any) -> None:
@@ -50,7 +50,6 @@ def memory_vault() -> dict[str, Callable[..., Any]]:
     }
 
 
-# Execution and Demonstration
 if __name__ == "__main__":
     print("Testing mage counter...")
     counter_a = mage_counter()
