@@ -44,7 +44,7 @@ def main() -> None:
     }
 
     try:
-        station = SpaceStation(**valid_data)
+        station = SpaceStation.model_validate(valid_data)
         print("Valid station created successfully!")
         print(f"ID: {station.station_id}")
         print(f"Name: {station.name}")
@@ -73,7 +73,7 @@ def main() -> None:
 
     print("Attempting to create an invalid station (crew_size = 25)...")
     try:
-        SpaceStation(**invalid_data)
+        SpaceStation.model_validate(invalid_data)
     except ValidationError as e:
         print("Expected validation error caught!")
         # Print the readable error message layout

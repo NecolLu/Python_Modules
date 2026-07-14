@@ -121,7 +121,7 @@ def main() -> None:
     }
 
     try:
-        mission = SpaceMission(**valid_mission_data)
+        mission = SpaceMission.model_validate(valid_mission_data)
         print("Valid mission created:")
         print(f"Mission: {mission.mission_name}")
         print(f"ID: {mission.mission_id}")
@@ -161,7 +161,7 @@ def main() -> None:
 
     print("Expected validation error:")
     try:
-        SpaceMission(**invalid_mission_data)
+        SpaceMission.model_validate(invalid_mission_data)
     except ValidationError as e:
         print(e)
 

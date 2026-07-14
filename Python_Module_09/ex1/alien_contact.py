@@ -86,7 +86,7 @@ def main() -> None:
     }
 
     try:
-        contact = AlienContact(**valid_data)
+        contact = AlienContact.model_validate(valid_data)
         print("Valid contact report:")
         print(f"ID: {contact.contact_id}")
         print(f"Type: {contact.contact_type.value}")
@@ -114,7 +114,7 @@ def main() -> None:
 
     print("Expected validation error:")
     try:
-        AlienContact(**invalid_telepathic)
+        AlienContact.model_validate(invalid_telepathic)
     except ValidationError as e:
         print(e)
 
