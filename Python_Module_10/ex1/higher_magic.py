@@ -17,6 +17,7 @@ def spell_combiner(
     spell1: Callable[[str, int], str],
     spell2: Callable[[str, int], str]
 ) -> Callable[[str, int], tuple[str, str]]:
+    # Callable[[Arg1Type, Arg2Type], ReturnType]
     # Combine two spells into a single function returning a tuple.
     def combined_spell(target: str, power: int) -> tuple[str, str]:
         res1 = spell1(target, power)
@@ -62,6 +63,7 @@ def spell_sequence(
 if __name__ == "__main__":
     print("Testing spell combiner...")
     combined = spell_combiner(fireball, heal)
+    # combined becomes a callable function that packages those two behaviors
     res_fire, res_heal = combined("Dragon", 10)
     print(f"Combined spell result: {res_fire}, {res_heal}")
 
