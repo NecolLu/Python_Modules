@@ -1,6 +1,7 @@
 import functools
 import operator
-from typing import Any, Callable
+from typing import Any, cast
+from collections.abc import Callable
 
 
 # Spell Reducer
@@ -20,7 +21,9 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     if operation not in op_map:
         raise ValueError(f"Unknown operation: {operation}")
 
-    return int(functools.reduce(op_map[operation], spells))
+    op = cast(Callable[[int, int], int], op_map[operation])
+
+    return int(functools.reduce(op, spells))
 
 
 # Partial Enchanter
